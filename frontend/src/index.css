@@ -1,0 +1,15 @@
+main {
+  min-height: 80vh;
+  font-size: 50px;
+}
+
+.zoom {
+  transition: transform 0.2s; /* Animation */
+
+  margin: 0 auto;
+}
+
+.zoom:hover {
+  transform: scale(1.1); /* (10% zoom)*/
+  z-index: 1;
+}
