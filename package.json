@@ -1,0 +1,19 @@
+{
+  "name": "store",
+  "version": "1.0.0",
+  "description": "store",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TropicalPunch/SHOP.git"
+  },
+  "author": "Ori s.",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TropicalPunch/SHOP/issues"
+  },
+  "homepage": "https://github.com/TropicalPunch/SHOP#readme"
+}

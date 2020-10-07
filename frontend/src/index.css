@@ -1,6 +1,7 @@
 main {
   min-height: 80vh;
   font-size: 50px;
+  margin-top: 5rem;
 }
 
 .zoom {
@@ -12,4 +13,46 @@ main {
 .zoom:hover {
   transform: scale(1.1); /* (10% zoom)*/
   z-index: 1;
+}
+/*see ProductScreen.js*/
+.priceCard {
+  opacity: 0.6;
+  margin-top: 2%;
+  width: 13rem;
+  position: fixed;
+  top: 10%;
+  right: 2%;
+  z-index: 2;
+}
+.priceCard:hover {
+  opacity: 1;
+}
+/*see YouTubePlayer.js ////////////////////*/
+.youtube-player {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.youtube-player .handle {
+  position: absolute;
+  bottom: -24%;
+  right: 96%;
+
+  color: rgb(7, 7, 7);
+  opacity: 0.85;
+
+  font-size: 1.5rem;
+  cursor: move;
+}
+
+.youtube-player .expand {
+  position: absolute;
+  bottom: -24%;
+  left: 96%;
+  font-size: 1.5rem;
+  color: rgb(7, 7, 7);
+  opacity: 0.85;
+  cursor: pointer;
 }
