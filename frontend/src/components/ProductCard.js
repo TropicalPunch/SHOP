@@ -8,15 +8,15 @@ const ProductCard = ({ product }) => {
   return (
     <Card className='my-3 p-3 rounded zoom'>
       <div>
-        <Link to={`/product/${product._id}`}>
+        <Link to={`/products/${product._id}`}>
           <Image src={product.image} variant='top' alt={product.name} fluid />
         </Link>
       </div>
 
       <Card.Body>
-        <Link to={`/product/${product._id}`} className='text-decoration-none'>
+        <Link to={`/products/${product._id}`} className='text-decoration-none'>
           <Card.Title as='div' className='text-info'>
-            <p class='font-weight-bold h4'>{product.name}</p>
+            <p className='font-weight-bold h4'>{product.name}</p>
           </Card.Title>
         </Link>
         <Card.Text as='div' className='my-3 text-dark h5'>

@@ -1,20 +1,38 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Row, Col, Image, ListGroup, Card, Button } from 'react-bootstrap'
 import Ratings from '../components/Ratings'
-import products from '../products' //its not a react component but a js variable
+//import products from '../products' //its not a react component but a js variable
 import YouTubePlayer from '../components/YouTubePlayer'
+import axios from 'axios'
+
 const ProductScreen = (props) => {
+  //we use props.match!
   //accessing the URL id param using props.match
-  const product = products.find(
-    (element) => element._id === props.match.params.id
-  )
+  // const product = products.find(
+  //   //this was used at the beginning when we fetch producs from ../products.js
+  //   (element) => element._id === props.match.params.id
+  // )
+
+  const [product, setProduct] = useState({}) // initial state is an empty object, because product is an object.
+
+  useEffect(() => {
+    const fetchProdFromDB = async () => {
+      //props.match.params.id allow us to get the params passed in the frontend's url !
+      const response = await axios.get(`/api/products/${props.match.params.id}`)
+      const data = await response.data
+      console.log(data)
+      setProduct(data) //setting the local state
+    }
+    fetchProdFromDB()
+  }, [props.match])
 
   return (
     <>
-      <Link className='btn btn-light my-3' to='/'>
+      <Link className='btn btn-light my-5 ' to='/'>
         Back to Products
       </Link>
+
       <Row>
         <Col>
           <Image src={product.poster} alt={product.name} fluid />
@@ -107,11 +125,15 @@ const ProductScreen = (props) => {
         <Col className='text-center my-5'>
           <h1>FEATURES</h1>
           <ListGroup variant='flush'>
-            {product.features.map((feature, i) => (
-              <ListGroup.Item key={i}>
-                <h5>{feature}</h5>
-              </ListGroup.Item>
-            ))}
+            {!product.features ? (
+              <h1> ...loading </h1>
+            ) : (
+              product.features.map((feature) => (
+                <ListGroup.Item>
+                  <h5>{feature}</h5>
+                </ListGroup.Item>
+              ))
+            )}
             <ListGroup.Item>
               <Image src={product.compatibility} alt='compatibility' fluid />
             </ListGroup.Item>
