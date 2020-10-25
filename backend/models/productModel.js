@@ -64,11 +64,31 @@ const productSchema = mongoose.Schema({
         required: true,
         default: 150
     },
-    inStock:{
+    status:{ //may call it inStock
         type: Boolean,
         required: true,
         default: true
     },
+    poster:{
+        type: String,
+       // required: true
+    },
+    interface:{
+        type: String,
+        //required: true
+    },
+    compatibility:{
+        type: String,
+       },
+    longDescription:{
+        type: String,
+        //required: true,
+    },
+    video1:{
+        type: String,
+        //required: true,
+    },
+    features: {type: [String], required: true},
     
 },{
     //mongoose built in time stamps for "created at"/ "updated at"
