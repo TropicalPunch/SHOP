@@ -8,7 +8,8 @@ import App from './App'
 import * as serviceWorker from './serviceWorker'
 
 ReactDOM.render(
-  <Provider store={store}>
+  //store is being passed by the provider accross all the app: it contains the reducers(actions) and state 
+  <Provider store={store}>  
     <App />
   </Provider>,
   document.getElementById('root')

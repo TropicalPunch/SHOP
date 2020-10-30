@@ -18,10 +18,10 @@ main {
 .priceCard {
   opacity: 0.6;
   margin-top: 2%;
-  width: 13rem;
+
   position: fixed;
-  top: 15%;
-  left: 2%;
+  top: 11%;
+  right: 0%;
   z-index: 2;
 }
 .priceCard:hover {

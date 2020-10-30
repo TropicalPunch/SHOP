@@ -12,6 +12,7 @@ router.get('/', asyncErrorhandler( async (req, res) => {
 
     const products = await Product.find({}) //passing empty object will give us all the elements(products) as a promise!!!.
     
+    // throw new Error('throw error at will for fun:)')
     res.json(products) //.json will sent the data as a JSON format!
 }))
   
