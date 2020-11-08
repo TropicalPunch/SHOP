@@ -11,6 +11,7 @@ const YouTubePlayer = ({ videoLink }) => {
         style={{ zIndex: 1, paddingBottom: '5%' }}
       >
         <ResizableBox width={300} height={200}>
+        
           {/*snippit from youtube api*/}
           <iframe
             title='iframe'
@@ -22,25 +23,25 @@ const YouTubePlayer = ({ videoLink }) => {
             }}
             src={videoLink}
             frameborder='0'
-          ></iframe>
+          > 
+          </iframe>
+          <div className='expand'>
+               
+              Size
+            </div>
 
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'flex-start',
-              justifyContent: 'space-between',
-            }}
-          >
+         
             <div className='handle'>
               <i className='fas fa-arrows-alt'></i>
               <h6>Drag</h6>
             </div>
 
-            <div className='expand'>
-              <i className='fas fa-expand-alt'></i>
+             
+         
+          {/* <div className='expand'>
+               <i className='fas fa-expand-alt'></i> 
               <h6>Size</h6>
-            </div>
-          </div>
+            </div>  */}
         </ResizableBox>
       </div>
     </Draggable>

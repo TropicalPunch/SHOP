@@ -26,6 +26,7 @@ const HomeScreen = () => {
   
   return (
     <>
+    <Row className='py-5'>
       <h1> Our Products </h1>
           { loading ? ( <Loader/> ) : error ? 
               (<Message variant='info'>{error}</Message>) 
@@ -39,7 +40,7 @@ const HomeScreen = () => {
                   </Row>
               )
           }
-      
+      </Row>
     </>
   )
 }

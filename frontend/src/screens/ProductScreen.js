@@ -13,7 +13,7 @@ import Loader from '../components/Loader'
 const ProductScreen = (props) => {
 
     const [minimPrice, setMinimPrice] = useState(true) // this state will control the size of the price card
-    const [prodQuant, setProdQuant] = useState(1) // initial Quantity of zero products
+    const [prodQuant, setProdQuant] = useState(1) // initial Quantity of one product
 
 
     const dispatch = useDispatch()
@@ -76,7 +76,7 @@ const ProductScreen = (props) => {
                                 <Row>
                                     <Col className='my-1 text-dark h5'>Price:</Col>
                                     <Col className='my-1 text-success h5'>
-                                    <strong>${product.price}</strong>
+                                    <strong>${Number(product.price).toFixed(2)}</strong>
                                     </Col>
                                 </Row>
                                 </ListGroup.Item>
