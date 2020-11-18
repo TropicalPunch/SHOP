@@ -62,7 +62,7 @@ const productSchema = mongoose.Schema({
     price:{
         type: Number,
         required: true,
-        default: 150
+        default: 150.00
     },
     status:{ //may call it inStock
         type: Boolean,
@@ -95,6 +95,6 @@ const productSchema = mongoose.Schema({
     timestamps: true
 })
 
-const Product = mongoose.model('Product', productSchema)
+const Product = mongoose.model('Product', productSchema) //this variable will contain the structure for which a data from the DB will be presented.
 
 export default Product

@@ -6,6 +6,8 @@ import Footer from './components/Footer'
 import HomeScreen from './screens/HomeScreen'
 import ProductScreen from './screens/ProductScreen'
 import CartScreen from './screens/CartScreen'
+import LoginScreen from './screens/LoginScreen'
+import RegisterScreen from './screens/RegisterScreen'
 
 const App = () => {
   return (
@@ -14,9 +16,12 @@ const App = () => {
         <Header style={{ position: 'relative' }} />
         <main className='py-4 '>
           <Container>
-            <Route path='/' component={HomeScreen} exact />
+          <Route path='/register' component={RegisterScreen} />
+            <Route path='/login' component={LoginScreen} />
             <Route path='/products/:id' component={ProductScreen} />
             <Route path='/cart/:id?' component={CartScreen} />
+            <Route path='/' component={HomeScreen} exact />
+
           </Container>
         </main>
         <Footer />

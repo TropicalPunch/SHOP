@@ -4,6 +4,14 @@ main {
   margin-top: 5rem;
 }
 
+.navdrop {
+  background-color: transparent;
+  font-size: medium;
+}
+.navdrop:hover {
+  background-color: #00b1ff;
+}
+
 .zoom {
   transition: transform 0.2s; /* Animation */
 
