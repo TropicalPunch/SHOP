@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import {CART_ADD_ITEM, CART_REMOVE_ITEM} from '../constants/cartConstants'
+import {CART_ADD_ITEM, CART_REMOVE_ITEM, CART_SAVE_SHIPPING_ADDRESS} from '../constants/cartConstants'
 
 
 //here we are using thunk...
@@ -35,5 +35,17 @@ export const removeFromCartAction = (id) => async (dispatch,getState)=>{
     //lets save it in loca storage : we may save only strings therefore we need JSON.stringify
     ///once we take it out (in the store) well use JSON.parse()
     localStorage.setItem('cartItems',JSON.stringify(getState().cart.cartItems))
+
+}
+
+export const saveShippingAddress = (formData) => async (dispatch,getState)=>{
+    //the action argument is the product ID!!
+    dispatch({
+        type: CART_SAVE_SHIPPING_ADDRESS,
+        payload: formData, //the paload is the from data that we got as an argument straigt from the frontend (by dispatch)!!
+    })
+    //lets save it in loca storage : we may save only strings therefore we need JSON.stringify
+    ///once we take it out (in the store) well use JSON.parse()
+    localStorage.setItem('shippingAddress',JSON.stringify(formData))
 
 }
