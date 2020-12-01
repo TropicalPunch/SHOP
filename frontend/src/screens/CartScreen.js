@@ -4,7 +4,7 @@ import{useDispatch, useSelector} from 'react-redux'
 import {Row,Col,ListGroup, Image, Button, Card} from 'react-bootstrap'
 import Message from '../components/Message'
 import {addToCartAction, removeFromCartAction} from '../actions/cartActions'
-
+import CheckoutProgressBar from'../components/CheckoutProgressBar'
 
 const CartScreen = (props) => {
     const {match, location, history} = props
@@ -36,6 +36,7 @@ const CartScreen = (props) => {
 
     return (
         <div>
+            <CheckoutProgressBar step1 />
            <Row className='py-3'  >
                <Col md={8}  >
                
@@ -74,7 +75,7 @@ const CartScreen = (props) => {
                                     </Col>
                                     <Col className='d-flex flex-column pt-4'>
                                         <Row>
-                                            <Link style={{color:'steelblue'}} className='font-weight-bold h3 ' to={`/product/${productProp.productId}`}>{productProp.name}</Link>
+                                            <Link style={{color:'steelblue'}} className='font-weight-bold h3 ' to={`/products/${productProp.productId}`}>{productProp.name}</Link>
                                         </Row>
 
                                         <Row className='font-weight-bold h3 p-2' >

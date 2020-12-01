@@ -7,6 +7,7 @@ import connectDB from './config/db.js' // DB connection
 
 import productRoutes from './routes/productsRoutes.js' //import the routes of products.
 import userRoutes from './routes/userRoutes.js'//import the routes of users (login).
+import orderRoutes from './routes/orderRoutes.js'//import the routes of orders .
 dotenv.config()
 const PORT = process.env.PORT || 5000
 const mode = process.env.NODE_ENV
@@ -23,7 +24,9 @@ app.get('/', (req, res) => {
 
 app.use('/api/products', productRoutes) //connect the product url to the router
 app.use('/api/users', userRoutes)//connect the users url to the router
+app.use('/api/orders', orderRoutes)//connect the users url to the router
 
+app.get('/api/config/paypal', (req,res)=> res.send(process.env.PAYPAL_CLIENT_ID)) //part of connecting to paypal via client id
 
 // 404 error creator:
 app.use(notFoundError)

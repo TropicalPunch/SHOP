@@ -13,6 +13,7 @@ import {
   USER_PROFILE_UPDATE_SUCCESS ,
   USER_PROFILE_UPDATE_FAIL ,
   USER_PROFILE_UPDATE_RESET,
+  USER_PROFILE_RESET,
    } from '../constants/userConstants'
 
 
@@ -65,7 +66,11 @@ export const userProfileReducer  = ( state = {user:{}}, action ) => { //this is 
                    case USER_PROFILE_FAIL:
                            return {loading: false, error: action.payload} //if fech failed...
                    
-                
+                          
+                           
+                  case USER_PROFILE_RESET:
+                         return {user:{}} 
+                        
                      default:
                        return state //pass the state as is.
                 

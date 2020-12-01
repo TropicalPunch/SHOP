@@ -3,6 +3,20 @@ main {
   font-size: 50px;
   margin-top: 5rem;
 }
+p {
+  font-size: large;
+}
+
+th,
+td {
+  font-size: large;
+  text-align: center;
+}
+
+.activeProg {
+  color: #ac19dd;
+  /* color: #00b1ff; */
+}
 
 .navdrop {
   background-color: transparent;

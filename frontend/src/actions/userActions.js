@@ -14,8 +14,10 @@ USER_PROFILE_FAIL,
 USER_PROFILE_UPDATE_REQUEST,
 USER_PROFILE_UPDATE_SUCCESS,
 USER_PROFILE_UPDATE_FAIL,
+USER_PROFILE_RESET
  } from '../constants/userConstants'
- 
+import{ ORDER_HISTORY_RESET} from "../constants/orderConstants"
+
 export const login = (email,password) => async (dispatch)=>{
  //here we also use the redux-thunk to make an asynchronous request.
  try{
@@ -60,6 +62,8 @@ export const logout = ()=> (dispatch)=>{
     localStorage.removeItem('userInfo') //deleting local storage
     dispatch({type: USER_LOGOUT}) //dispatching it to the reducer-{will empty the user related state}
     document.location.href = '/login' //re directing user to login
+    dispatch({ type: USER_PROFILE_RESET})
+    dispatch({ type: ORDER_HISTORY_RESET}) 
 }
 
 

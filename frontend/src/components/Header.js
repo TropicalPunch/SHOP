@@ -31,12 +31,13 @@ const Header = () => {
               <LinkContainer to='/cart'>
                 <Nav.Link varient='dark'>
                   <h4>
-                    <i className='fas fa-shopping-cart p-3'></i> Cart
+                    <i className='fas fa-shopping-cart p-3'></i>
                   </h4>
                 </Nav.Link>
               </LinkContainer>
               {userInfo ? (
                 <div style={{display:'flex', alignItems:'center'}}>
+                  
                <NavDropdown title={userInfo.name} id='username' className='h4'>
                   <NavDropdown.Item className='navdrop' href="/profile">Profile</NavDropdown.Item>
                   <NavDropdown.Divider />
