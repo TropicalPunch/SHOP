@@ -2,24 +2,40 @@ import {createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import {composeWithDevTools} from 'redux-devtools-extension'
 
-import {productsListReducer, productCardReducer } from './reducers/productsReducers'
+import {
+    productsListReducer, 
+    productCardReducer, 
+    productDeleteByAdminReducer,
+    productCreateByAdminReducer,
+    productUpdateByAdminReducer,
+    productAddReviewReducer
+} from './reducers/productsReducers'
 import {cartReducer} from './reducers/cartReducers'
-import {userLoginReducer,userRegisterReducer,userProfileReducer,userUpdateProfileReducer   } from './reducers/userReducers'
-import {orderCreateReducer,orderDetailsReducer,orderPayReducer,orderUserHistoryReducer} from './reducers/orderReducers'
+import {userLoginReducer,userRegisterReducer,userProfileReducer,userUpdateProfileReducer, usersCompleteListReducer, userDeleteReducer,userUpdateByAdminReducer } from './reducers/userReducers'
+import {orderCreateReducer,orderDetailsReducer,orderPayReducer,orderUserHistoryReducer,ordersListAllReducer,orderSetAsDeliverdReducer} from './reducers/orderReducers'
 
 
 const reducer  = combineReducers({ //reducer is part of the store's inputs
     productsList: productsListReducer,
     productDetails: productCardReducer,
+    productDeleteByAdmin:productDeleteByAdminReducer,
+    productCreateByAdmin:productCreateByAdminReducer,
+    productUpdateByAdmin:productUpdateByAdminReducer,
+    productAddReview:productAddReviewReducer,
     cart: cartReducer,
     userLogin: userLoginReducer,
     userRegister: userRegisterReducer,
     userProfile: userProfileReducer,
     userUpdateProfile: userUpdateProfileReducer,
+    usersCompleteList:usersCompleteListReducer,
+    userDelete:userDeleteReducer,
+    userUpdateByAdmin: userUpdateByAdminReducer,
     orderCreate: orderCreateReducer,
     orderDetails: orderDetailsReducer,
     orderPay: orderPayReducer,
-    orderUserHistory: orderUserHistoryReducer
+    orderUserHistory: orderUserHistoryReducer,
+    ordersListAll: ordersListAllReducer,
+    orderSetAsDeliverd:orderSetAsDeliverdReducer
     
 })
 

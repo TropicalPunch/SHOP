@@ -6,24 +6,32 @@ import {createOrder} from '../actions/orderActions'
 import CheckoutProgressBar from'../components/CheckoutProgressBar'
 import Message from '../components/Message'
 
+import { ORDER_CREATE_RESET } from '../constants/orderConstants'
+import { USER_PROFILE_RESET } from '../constants/userConstants'
+
 const PlaceOrderScreen = ({history}) => {
-
+    
     const dispatch = useDispatch()
-  
-
+    
     const addTwoDecimals = (price)=>{
         //this function will make sure we display the price allways with 2 decimals, even if it's 5.2 === 5.20 
-         return (Math.round(price*100 / 100).toFixed(2))
+        return (Math.round(price*100 / 100).toFixed(2))
     } 
-
-    const cart = useSelector(state=>state.cart)
-    const {shippingAddress, paymentMethod, cartItems} = cart
-    console.log(cartItems)
-    console.log(cart)
-
+    const cart = useSelector((state) => state.cart) //the store's cart state
+    //const{shippingAddress, paymentMethod, cartItems} = cart ////extract shippingAddress from the store's cart state
+    
+    if(!cart.shippingAddress) {
+        history.push('/cart')
+      } else if (!cart.paymentMethod) {
+        history.push('/payment')
+      }
+    //console.log(shippingAddress)
+    // console.log(cartItems)
+    //console.log(cart)
+    
     //lets setup the summary variables: this is the first time we create those variables 
     //calculate items in cart total price:
-    cart.itemsTotalPrice = addTwoDecimals(cartItems.reduce((acc,item)=>item.price*item.quantity + acc , 0).toFixed(2))//0-> the start value of the acc variable
+    cart.itemsTotalPrice = addTwoDecimals(cart.cartItems.reduce((acc,item)=>item.price*item.quantity + acc , 0).toFixed(2))//0-> the start value of the acc variable
     //setup shipping price if there is any:
     cart.shippingPrice = addTwoDecimals(cart.itemsTotalPrice > 200 ? 0 : 50)    //setup Tax price
     //setup tax price based on 18% from total items price:
@@ -31,23 +39,26 @@ const PlaceOrderScreen = ({history}) => {
     //setup total order price  if there is any:
     cart.totalOrderPrice = (Number(cart.itemsTotalPrice) + Number(cart.shippingPrice)+Number(cart.taxPrice)).toFixed(2)
     
-    const orderCreate = useSelector(state=> state.orderCreate) //we get it from the store.
+    const orderCreate = useSelector((state)=> state.orderCreate) //we get it from the store.
     const {order, success, error} = orderCreate
-   
+    
     useEffect(()=>{
+        
         if(success){
             history.push(`/order/${order._id}`) //if we filles the order successfully we will redirect the user to the order page.
-        
+            dispatch({ type: ORDER_CREATE_RESET })
+            dispatch({type: USER_PROFILE_RESET })
         }
         // eslint-disable-next-line
-    },[history, success])
-
+    },[history, success ])
+    
+    
 
     const placeOrderHandler = ()=>{
         dispatch(createOrder({ //the order object is dispatched and makes its way to action and from there to the server
-            orderItems: cartItems, //this is the first time we create orderItems
-            shippingAddress: shippingAddress,
-            paymentMethod: paymentMethod,
+            orderItems: cart.cartItems, //this is the first time we create orderItems
+            shippingAddress: cart.shippingAddress,
+            paymentMethod: cart.paymentMethod,
             itemsTotalPrice: cart.itemsTotalPrice,
             shippingPrice: cart.shippingPrice,
             taxPrice: cart.taxPrice,
@@ -59,6 +70,7 @@ const PlaceOrderScreen = ({history}) => {
     return (
         <>
            <CheckoutProgressBar step1 step2 step3 step4 /> 
+        { cart.shippingAddress &&
            <Row>
            
                <Col md={8}>
@@ -67,7 +79,7 @@ const PlaceOrderScreen = ({history}) => {
                            <h2>Shipping</h2>
                            <p>
                               <strong>Address:</strong> 
-                              &nbsp;{shippingAddress.address}, {shippingAddress.city}{' '} {shippingAddress.postalCode}, {shippingAddress.country}.
+                              &nbsp;{cart.shippingAddress.address}, {cart.shippingAddress.city}{' '} {cart.shippingAddress.postalCode}, {cart.shippingAddress.country}.
                            </p>
                        </ListGroup.Item>
                   
@@ -75,17 +87,17 @@ const PlaceOrderScreen = ({history}) => {
                            <h2>Payment Method</h2>
                            <p>
                              <strong>Method:</strong> 
-                            {' '}{paymentMethod}.
+                            {' '}{cart.paymentMethod}.
                            </p>
                        </ListGroup.Item>
                        <ListGroup.Item>
                            <h2>Order Items</h2>
-                           {cartItems.length === 0 ?
+                           {cart.cartItems.length === 0 ?
                             <Message>Cart is Empty</Message>
                             :
                             (
                                 <ListGroup variant= 'flush'>
-                                    {cartItems.map((product, index)=>(
+                                    {cart.cartItems.map((product, index)=>(
                                         <ListGroup.Item key={index}>
                                             <Row>
                                                 <Col md={4} >
@@ -155,12 +167,13 @@ const PlaceOrderScreen = ({history}) => {
                        </ListGroup.Item>
                        </ListGroup>
 
-                            <Button onClick={placeOrderHandler} disabled={cartItems.length === 0} variant="warning" block> 
+                            <Button onClick={placeOrderHandler} disabled={cart.cartItems.length === 0} variant="warning" block> 
                                     <h3>Place Order </h3>
                             </Button>
                    </Card>
                </Col>
            </Row>
+           }
         </>
     )
 }

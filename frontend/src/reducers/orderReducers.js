@@ -3,6 +3,7 @@ import{
     ORDER_CREATE_REQUEST ,
  ORDER_CREATE_SUCCESS , 
  ORDER_CREATE_FAIL,
+ ORDER_CREATE_RESET,
  ORDER_DETAILS_REQUEST ,
  ORDER_DETAILS_SUCCESS , 
  ORDER_DETAILS_FAIL,
@@ -13,7 +14,15 @@ import{
  ORDER_HISTORY_REQUEST,
  ORDER_HISTORY_SUCCESS,
 ORDER_HISTORY_FAIL,
-ORDER_HISTORY_RESET
+ORDER_HISTORY_RESET,
+ORDERS_LIST_ALL_REQUEST,
+ORDERS_LIST_ALL_SUCCESS,
+ORDERS_LIST_ALL_FAIL,
+ORDER_SET_DELIVERD_REQUEST,
+ORDER_SET_DELIVERD_SUCCESS,
+ORDER_SET_DELIVERD_FAIL,
+ORDER_SET_DELIVERD_RESET,
+
 } from '../constants/orderConstants'
 
  export const orderCreateReducer = ( state = {}, action)=>{
@@ -32,7 +41,10 @@ ORDER_HISTORY_RESET
             return{
                 loading: false,
                 error: action.payload, 
-            }  
+            }
+        case ORDER_CREATE_RESET:
+        return{ } 
+          
             default :
             return state         
      }
@@ -56,6 +68,8 @@ ORDER_HISTORY_RESET
                loading: false,
                error: action.payload, 
            }  
+
+        
            default :
            return state         
     }
@@ -109,6 +123,61 @@ export const orderUserHistoryReducer = ( state = {orders:[]}, action)=>{ //this 
            case ORDER_HISTORY_RESET:
             return{orders:[]} 
        
+           default :
+           return state         
+    }
+
+}
+
+
+ 
+
+
+//admin operation
+export const ordersListAllReducer = ( state = {orders:[]}, action)=>{
+    switch(action.type){
+       case ORDERS_LIST_ALL_REQUEST:
+           return{
+               loading: true
+           }
+       case ORDERS_LIST_ALL_SUCCESS:
+           return{
+               loading: false,
+               orders: action.payload, 
+           }  
+       case ORDERS_LIST_ALL_FAIL:
+           return{
+               loading: false,
+               error: action.payload, 
+           }  
+           default :
+           return state         
+    }
+
+}
+
+
+//admin operation
+export const orderSetAsDeliverdReducer = ( state = {}, action)=>{
+    switch(action.type){
+       case ORDER_SET_DELIVERD_REQUEST:
+           return{
+               loading: true
+           }
+       case ORDER_SET_DELIVERD_SUCCESS:
+           return{
+               loading: false,
+               success: true, 
+           }  
+       case ORDER_SET_DELIVERD_FAIL:
+           return{
+               loading: false,
+               error: action.payload, 
+           }  
+           
+           case ORDER_SET_DELIVERD_RESET:
+           return{ } 
+
            default :
            return state         
     }

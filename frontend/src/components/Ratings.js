@@ -64,7 +64,7 @@ const Ratings = ({ value, text, starColor }) => {
           }
         ></i>
       </span>
-      <p>{text > 1 ? `${text} Artists reviews` : `${text} Artist review`}</p>
+      <p>{text > 1 ? `${text} Artists reviews` : text === 1 ? `One Artist review` : ''}</p>
       {/*may also write {text && text} */}
     </div>
   )
@@ -79,7 +79,7 @@ Ratings.defaultProps = {
 //propTypes- setting the data types of the props. if conditions not met, will throw an error in consule.
 Ratings.propTypes = {
   value: PropTypes.number.isRequired,
-  text: PropTypes.string.isRequired,
+  text: PropTypes.number,
   starColor: PropTypes.string,
 }
 

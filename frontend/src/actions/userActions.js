@@ -1,10 +1,9 @@
 import axios from 'axios'
 import {
-    USER_LOGIN_REQUEST,
+USER_LOGIN_REQUEST,
 USER_LOGIN_SUCCESS ,
 USER_LOGIN_FAIL ,
 USER_LOGOUT ,
-
 USER_REGISTER_REQUEST,
 USER_REGISTER_SUCCESS ,
 USER_REGISTER_FAIL, 
@@ -14,7 +13,18 @@ USER_PROFILE_FAIL,
 USER_PROFILE_UPDATE_REQUEST,
 USER_PROFILE_UPDATE_SUCCESS,
 USER_PROFILE_UPDATE_FAIL,
-USER_PROFILE_RESET
+USER_PROFILE_RESET,
+USER_COMPLETE_LIST_REQUEST,
+USER_COMPLETE_LIST_SUCCESS,
+USER_COMPLETE_LIST_FAIL,
+USER_COMPLETE_LIST_RESET,
+USER_DELETE_REQUEST,
+USER_DELETE_SUCCESS,
+USER_DELETE_FAIL,
+USER_PROFILE_UPDATE_BY_ADMIN_REQUEST,
+USER_PROFILE_UPDATE_BY_ADMIN_SUCCESS,
+USER_PROFILE_UPDATE_BY_ADMIN_FAIL,
+
  } from '../constants/userConstants'
 import{ ORDER_HISTORY_RESET} from "../constants/orderConstants"
 
@@ -64,6 +74,7 @@ export const logout = ()=> (dispatch)=>{
     document.location.href = '/login' //re directing user to login
     dispatch({ type: USER_PROFILE_RESET})
     dispatch({ type: ORDER_HISTORY_RESET}) 
+    dispatch({type: USER_COMPLETE_LIST_RESET})
 }
 
 
@@ -214,4 +225,155 @@ export const register = (name,email,password) => async (dispatch)=>{
     }
    
    }
+
+//for admin all users in DB list.
+   export const listAllUsers = () => async (dispatch, getState)=>{
+    //here we also use the redux-thunk to make an asynchronous request.
+    //we use getState because we can access the userInfo which contains the token.
+    //this actions will get the users array.
+    
+    
+    try{
+       dispatch({
+           type: USER_COMPLETE_LIST_REQUEST
+       })
+
+       const {userLogin:{userInfo}} = getState() //destructure userInfo from getstate (it's a second level destructure)
+       //we use getState to access the userInfo which contains the token at--> userInfo.token .
+    
+       const config = {
+           headers:{
+               //'Content-type':'application/json',- no need in get request.
+               //for communicating with the server
+               Authorization:`Bearer ${userInfo.token}`
+               //for providing a Bearer token to the server (protected route)
+           }
+       }
+       
+       const {data} = await axios.get(`/api/users`, config)
+    //we are going to put(edit!) data on server, the route is /api/users/profile.
+    //the second parameter- user- is the specific user we will change which containes the new data
+       dispatch({
    
+        type: USER_COMPLETE_LIST_SUCCESS,
+        payload: data,
+   
+       })
+      
+   }catch (error){
+       dispatch({type: USER_COMPLETE_LIST_FAIL, 
+           payload: 
+           error.response && error.response.data.message 
+           ?
+            error.response.data.message
+           :
+           error.message
+            })
+   
+   
+    }
+   
+   }
+
+//for admin: delete user by id from DB.
+export const deleteUserById = (userId) => async (dispatch, getState)=>{
+    //here we also use the redux-thunk to make an asynchronous request.
+    //we use getState because we can access the userInfo which contains the token.
+    //this actions will get the user deleted from the DB.
+ 
+    
+    try{
+       dispatch({
+           type: USER_DELETE_REQUEST
+       })
+
+       const {userLogin:{userInfo}} = getState() //destructure userInfo from getstate (it's a second level destructure)
+       //we use getState to access the userInfo which contains the token at--> userInfo.token .
+    
+       const config = {
+           headers:{
+               //'Content-type':'application/json',- no need in delete request.
+               //for communicating with the server
+               Authorization:`Bearer ${userInfo.token}`
+               //for providing a Bearer token to the server (protected route)
+           }
+       }
+       
+       await axios.delete(`/api/users/${userId}`, config) //no need to store this data in a variable.
+    //we are going to DELETE data from server, the route is /api/users/:id.
+    
+       dispatch({
+   
+        type: USER_DELETE_SUCCESS,
+   
+       })
+      
+   }catch (error){
+       dispatch({type: USER_DELETE_FAIL, 
+           payload: 
+           error.response && error.response.data.message 
+           ?
+            error.response.data.message
+           :
+           error.message
+            })
+   
+   
+    }
+   
+   }
+
+ 
+
+//for admin: update user's data by recieving user object.
+export const updateUserByAdmin = (user) => async (dispatch, getState)=>{
+    //here we also use the redux-thunk to make an asynchronous request.
+    //we use getState because we can access the userInfo which contains the token.
+    //this actions will get the user-object from the frontend and update it in the DB.
+ 
+    
+    try{
+       dispatch({
+           type:  USER_PROFILE_UPDATE_BY_ADMIN_REQUEST
+       })
+
+       const {userLogin:{userInfo}} = getState() //destructure userInfo from getstate (it's a second level destructure)
+       //we use getState to access the userInfo which contains the token at--> userInfo.token .
+    
+       const config = {
+           headers:{
+               'Content-type':'application/json',
+               //for communicating with the server
+               Authorization:`Bearer ${userInfo.token}`
+               //for providing a Bearer token to the server (protected route)
+           }
+       }
+       
+       const {data} = await axios.put(`/api/users/${user._id}`, user, config)
+    //we are going to put(edit!) data on server, the route is /api/users/profile.
+    //the second parameter- user- is the specific user we will change which containes the new data
+    
+    dispatch({ 
+        type: USER_PROFILE_UPDATE_BY_ADMIN_SUCCESS,
+        payload: data,
+    })
+    
+    dispatch({//we also need that data to be updated in the user profile itself
+     type: USER_PROFILE_UPDATE_SUCCESS,
+     payload: data,
+
+    })
+   }catch (error){
+       dispatch({type: USER_PROFILE_UPDATE_BY_ADMIN_FAIL, 
+           payload: 
+           error.response && error.response.data.message 
+           ?
+            error.response.data.message
+           :
+           error.message
+            })
+   
+   
+    }
+   
+   }

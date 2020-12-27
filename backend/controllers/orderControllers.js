@@ -103,7 +103,41 @@ const allUserOrders = asyncErrorhandler(async (req,res)=>{
 
 })
 
+//admin's protected route
+//GET request- get ALL orders history
+//  private route: /api/orders
+const adminsAllOrders = asyncErrorhandler(async (req,res)=>{
+    
+    //search the DB for all the orders 
+    //we use populate(...) to gain access to the identity of the user who created the order.
+    const allOrders = await Order.find({}).populate('user', 'id name email') 
+    res.json(allOrders)
+    
 
+})
 
-export {createOrder, getOrderById, updateOrderToPaidById, allUserOrders}
+//admin operation
+//PUT request- first fetching an order from the DB by order id and then update some of it's status to delivered!
+//  private route: /api/orders/:id/deliver
+const updateOrderToDelivered = asyncErrorhandler(async (req,res)=>{
+    
+    //search the DB for the order by the id in the URL params.
+    const order = await Order.findById(req.params.id)
+ 
+  
+   if(order){
+      
+       order.isDelivered= true
+       order.deliveredAt = Date.now()
+     
+        const updatedOrder = await order.save()
+        res.json(updatedOrder)
+   }else{
+       res.status(404)
+       throw new Error('Order could not be updated')
+   }
+
+})
+
+export {createOrder, getOrderById, updateOrderToPaidById, allUserOrders,adminsAllOrders,updateOrderToDelivered}
 

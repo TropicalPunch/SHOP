@@ -9,7 +9,9 @@ import {savePaymentMethod} from '../actions/cartActions'//import the action to d
 const PaymentScreen = ({history}) => {//destructure history from props
     const cart = useSelector(state => state.cart) //the store's cart state
     const{shippingAddress} = cart ////extract shippingAddress from the store's cart state
+   
     if(!shippingAddress){
+
         history.push('/shipping')
     }
     //the initial local state will be PayPal
@@ -19,7 +21,6 @@ const PaymentScreen = ({history}) => {//destructure history from props
     
     const submitHandler = (event)=>{
         event.preventDefault() //so the page wont be refreshed
-        
         //dispatch the action with the choosen payment method the user entered in the form!
         dispatch(savePaymentMethod(paymentMethod))
         history.push('/placeorder')

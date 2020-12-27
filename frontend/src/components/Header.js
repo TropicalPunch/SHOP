@@ -56,6 +56,21 @@ const Header = () => {
                 </Nav.Link>
               </LinkContainer>
               }
+              
+              {userInfo && userInfo.isAdmin && ( //different dropdown if the user is admin
+                <div style={{display:'flex', alignItems:'center'}}>
+                  
+                  <NavDropdown title="Admin Ops" id='adminmenu' className='h4'>
+                  <NavDropdown.Item className='navdrop' href="/admin/users">Users List</NavDropdown.Item>
+                    <NavDropdown.Divider />
+                    <NavDropdown.Item className='navdrop' href="/admin/products">Products List</NavDropdown.Item> 
+                    <NavDropdown.Divider />
+                    <NavDropdown.Item className='navdrop' href="/admin/orders">Orders List</NavDropdown.Item>              
+                  </NavDropdown>
+  
+                 </div>
+               
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>

@@ -11,7 +11,7 @@ const products = [
     price: 149,
     status: true,
     poster: '/images/manipulatorPoster.jpg',
-    interface: '/images/manipulatorInterface.png',
+    interfaceImage: '/images/manipulatorImage.png',
     compatibility: '/images/COMPATIBILITY-300x60.png',
     longDescription:
       'Through unique granular algorithms, Manipulator can dramatically alter the timbre and pitch of monophonic audio in new and unexplored ways. From subtly imposing pitch and harmonization, to a full-on sonic mangle that will leave you with a totally new sound, Manipulator is as    versatile as it is creativity-inducing.',

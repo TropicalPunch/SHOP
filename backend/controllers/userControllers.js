@@ -33,7 +33,7 @@ const authUser = asyncErrorhandler(async (req,res)=>{
 const getUserProfile = asyncErrorhandler(async (req,res)=>{
   
     //in authMiddleware.js we store all user data that's passed the authentication and authorization proccess in req.user (excluding his password)
-    const user = await User.findById(req.user._id)
+    const user = await User.findById(req.user._id)  // req.user._id refers to the logged in user
    // res.send('good! call')
    if(user){
      res.json({
@@ -50,12 +50,12 @@ const getUserProfile = asyncErrorhandler(async (req,res)=>{
  })
 
 
- //this is a PUT request to the protected route: api/users/profile
+//this is a PUT request to the protected route: api/users/profile
 //enables edit the specific user's data.
 const updateUserProfile = asyncErrorhandler(async (req,res)=>{
   
     //in authMiddleware.js we store all user data that's passed the authentication and authorization proccess in req.user (excluding his password)
-    const user = await User.findById(req.user._id)
+    const user = await User.findById(req.user._id)// req.user._id refers to the logged in user
    
    if(user){
 
@@ -118,4 +118,90 @@ const registerUser = asyncErrorhandler(async (req,res)=>{
  
  })
 
-export {authUser,getUserProfile, updateUserProfile  ,registerUser}
+//For Admin Use only
+ //this is a GET request to the protected route: api/users
+//return all users data.
+const getAllUsers = asyncErrorhandler(async (req,res)=>{
+  
+    //in authMiddleware.js we store all user data that's passed the authentication and authorization proccess in req.user (excluding his password)
+    const allUsers = await User.find({}) //we must pass an empty object 
+    res.json(allUsers)
+ 
+ })
+
+
+ 
+//For Admin Use only
+ //this is a DELETE request to the protected route: api/users/:id
+//return a message for delete complete.
+const deleteUserById = asyncErrorhandler(async (req,res)=>{
+  
+    //in authMiddleware.js we store all user data that's passed the authentication and authorization proccess in req.user (excluding his password)
+    const user = await User.findById(req.params.id) 
+    
+    if(user){
+        await user.remove()
+        res.json({message:'User removed'})
+    }else{
+        res.status(404)
+        throw new Error('User not found') 
+    }
+ 
+ })
+
+ //For Admin Use only
+ //this is a GET request to the protected route: api/users/:id
+//return the requested user profile.
+const getUserById = asyncErrorhandler(async (req,res)=>{
+  
+    //in authMiddleware.js we store all user data that's passed the authentication and authorization proccess in req.user (excluding his password)
+    const user = await User.findById(req.params.id).select('-password') //get user's data minus his password!
+    
+    if(user){
+        res.json(user)
+    }else{
+        res.status(404)
+        throw new Error('User not found') 
+    }
+ 
+ })
+
+ //For Admin Use only
+//this is a PUT request to the protected route: api/users/:id
+//enables edit the specific user's data by admin!
+const updateUserProfileByAdmin = asyncErrorhandler(async (req,res)=>{
+  
+    //in authMiddleware.js we store all user data that's passed the authentication and authorization proccess in req.user (excluding his password)
+    //while-> req.user._id refers to the logged in user
+    //we refer to the id in the URL params!
+    const user = await User.findById(req.params.id) 
+    //console.log(user._id == process.env.ADMIN_ID )
+   if(user){
+         //if(req.user._id === process.env.ADMIN_ID || req.params.id !== process.env.ADMIN_ID ){ not working
+        if(req.user._id.toString() === process.env.ADMIN_ID.toString() || user._id.toString() !== process.env.ADMIN_ID.toString() ){ 
+
+                user.name = req.body.name || user.name
+                user.email = req.body.email || user.email
+                user.isAdmin = req.body.isAdmin
+                const updatedUser = await user.save()
+                
+                res.json({
+                    _id: updatedUser._id,
+                    name: updatedUser.name,
+                    email: updatedUser.email,
+                    isAdmin: updatedUser.isAdmin,
+                    
+                })
+        }else{
+            res.status(403)
+            throw new Error(`you don't have pesmission for that!`)
+        }
+   }else{
+       res.status(404)
+       throw new Error('user not found')
+   }
+ 
+ })
+
+
+export {authUser,getUserProfile, updateUserProfile  ,registerUser, getAllUsers, deleteUserById, getUserById, updateUserProfileByAdmin}

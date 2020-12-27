@@ -7,22 +7,23 @@ import {saveShippingAddress} from '../actions/cartActions'//import the action to
 
 
 const ShippingScreen = ({history}) => {//destructure history from props
-    const cart = useSelector(state => state.cart) //the store's cart state
+    const cart = useSelector((state) => state.cart) //the store's cart state
     const{shippingAddress} = cart ////extract shippingAddress from the store's cart state
-    
+   
     //the initial local state will be that of the stores (if the user already filled it and it was saved in the local storage)
     const [address, setAddress] = useState(shippingAddress.address) 
     const [city, setCity] = useState(shippingAddress.city) 
     const [postalCode, setPostalCode] = useState(shippingAddress.postalCode) 
     const [country, setCountry] = useState(shippingAddress.country) 
     
+   
     const dispatch = useDispatch()
+   
     
     const submitHandler = (event)=>{
         event.preventDefault() //so the page wont be refreshed
-        
         //dispatch the action with the data the user entered in the form as an object!
-        dispatch(saveShippingAddress({address,city,postalCode,country}))
+        dispatch(saveShippingAddress({address, city, postalCode, country}))
         history.push('/payment')
     }
  

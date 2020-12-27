@@ -3,15 +3,15 @@ import axios from 'axios'
 import { PayPalButton } from "react-paypal-button-v2"
 import { Link } from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux' //so we can access the redux app level state
-import { Row, Col, Image,Card, ListGroup} from 'react-bootstrap'
-import {getOrderDetails, payOrder} from '../actions/orderActions'
-import{ORDER_PAY_RESET} from '../constants/orderConstants'
+import { Row, Col, Image,Card, ListGroup,Button} from 'react-bootstrap'
+import {getOrderDetails, payOrder,setOrderAsDeliveredByAdmin} from '../actions/orderActions'
+import{ORDER_PAY_RESET, ORDER_SET_DELIVERD_RESET } from '../constants/orderConstants'
 import{CART_RESET} from '../constants/cartConstants'
 import Loader from'../components/Loader'
 import Message from '../components/Message'
 
 
-const OrderScreen = ({match}) => {
+const OrderScreen = ({match, history}) => {
 
     const orderId = match.params.id //previous screen pushed us to /order/orderid
    
@@ -26,8 +26,15 @@ const OrderScreen = ({match}) => {
     const orderPayment = useSelector(state=> state.orderPay) //we get it from the store.
     const {loading:loadingPayment ,success: successPayment} = orderPayment //destructure + renaming due to duplicates!
 
-    useEffect(() => {
+    const orderDelivered = useSelector(state=> state.orderSetAsDeliverd) //we get it from the store.
+    const {loading:loadingDelivered ,success: successDelivered} = orderDelivered //destructure + renaming due to duplicates!
 
+    const userLogin = useSelector(state=> state.userLogin) //we get it from the store.
+    const {userInfo} = userLogin //destructure 
+    
+
+    useEffect(() => {
+        if(!userInfo){ history.push('/login')}
         const addPayPalSDKscript = async ()=>{
             const {data: clientId } = await axios.get('/api/config/paypal') //fetching the paypal client id from the server in it's json form to object
            //clientId- will give us back the string itself 
@@ -47,11 +54,11 @@ const OrderScreen = ({match}) => {
         
 
 
-        if(!order || order._id !== orderId || successPayment ) {
+        if(!order || order._id !== orderId || successPayment || successDelivered) {
            
              //in order to prevent an infinet loop when a successful payment is made, we must reset the order's state or else it will keep refreshing the order.
              dispatch({type:ORDER_PAY_RESET}) //in the reducers will return an empty object!
-           
+             dispatch({type:ORDER_SET_DELIVERD_RESET})//when admin sets an order as delivered:in the reducers will return an empty object!
 
              dispatch(getOrderDetails(orderId))
 
@@ -64,11 +71,17 @@ const OrderScreen = ({match}) => {
                 setSdkReady(true)
             }
         }
-    }, [order, orderId, dispatch, successPayment]) 
+    }, [order, orderId, dispatch, successPayment, successDelivered]) 
 
     const successPaymentHandler = (paymentResult)=>{ //paymentResult - is from paypal
         //console.log(paymentResult)
         dispatch(payOrder(orderId,paymentResult))//pass it to the orderActions
+        
+    }
+
+    const setOrderAsDeliveredHandler = ()=>{ 
+        
+        dispatch(setOrderAsDeliveredByAdmin(orderId))//pass it to the orderActions
         
     }
 
@@ -143,6 +156,12 @@ const OrderScreen = ({match}) => {
                        <ListGroup.Item > 
                            <h2>Order Summary</h2>
                        </ListGroup.Item>
+                       {loadingDelivered && <Loader/>}
+                       {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered &&
+                       //user must be logged+ he must be an admin order must be paid and not deliverd yet!
+                      
+                       <Button type='button' variant="warning" onClick={setOrderAsDeliveredHandler} block>SET ORDER AS DELIVERED</Button>
+                       }
                        <ListGroup.Item > 
                            <Row>
                                <Col>
@@ -201,7 +220,7 @@ const OrderScreen = ({match}) => {
                        
                        </ListGroup>
 
-                         {/*we will soon add a paypal button */}
+                        
                    </Card>
                </Col>
            </Row>

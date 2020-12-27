@@ -31,4 +31,14 @@ const protect = asyncErrorHandler(async(req, res,next) =>{ //we wrap the midlewa
 
     
 })
-export{ protect }
+// admin middleware function for admin routes:
+const adminProtect = (req, res ,next) =>{
+    if(req.user && req.user.isAdmin){ //only if there is a logged in user and he is an admin!
+        
+        next()
+    }else{
+        res.status(401)
+        throw new Error('Not authrized, Admin only.')
+    }
+}
+export{ protect, adminProtect }

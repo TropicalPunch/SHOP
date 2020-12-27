@@ -80,7 +80,7 @@ const orderSchema = mongoose.Schema({
     
     
 },{
-    //mongoose built in time stamps for "created at"/ "updated at"
+    //mongoose built in time stamps for "createdAt"/ "updatedAt"-see it in use in AdminsAllOrdersScreen.js
     timestamps: true
 })
 
