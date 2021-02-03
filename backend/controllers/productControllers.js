@@ -1,12 +1,27 @@
 import Product from '../models/productModel.js'
 import asyncErrorhandler from 'express-async-handler' //an npm pack for handling errors instead of using try catch
 
-const getProducts = asyncErrorhandler(async (req,res)=>{
-    const products = await Product.find({}) //get all products
-     
+const getProducts = asyncErrorhandler(async (req,res)=>{ //req.query.searchKeyword ==> we set it in the app.js route
+    //pagination:
+    const pageSize = 8 //how many products per page
+    const page = Number(req.query.pageNumber) || 1 //get page number from query string url. if no number there , it's page 1!
+    
+    const searchKeyword = req.query.searchKeyword ? {
+        name: {
+            $regex: req.query.searchKeyword, //use regex to make search match expressions like ==> harddisc to hard disc.
+            $options: 'i', //case insensetive
+
+        }}
+        :
+        {}
+    console.log(searchKeyword)
+
+    const count = await Product.countDocuments({...searchKeyword})//count products for pagination.
+    const products = await Product.find({...searchKeyword}).limit(pageSize).skip(pageSize * (page - 1)) //get all products /or searched value
+     //limit and skip are part of the pagination- they give us the right amount of products for each page! and the right products!
     // throw new Error('throw error at will for fun:)')
-    res.json(products) //.json will sent the data as a JSON format! sowhen fatching it we will nedd to JSON.parse() (it is an array of objects.)
-   
+    res.json({products, page, pages: Math.ceil(count/pageSize) }) //.json will sent the data as a JSON format! sowhen fatching it we will nedd to JSON.parse() (it is an array of objects.)
+   //after pagination is implement we must also send in the response the current page and the amount of total pages
 })
 
 const getProductById =  asyncErrorhandler( async (req, res) => {
@@ -62,10 +77,10 @@ const createProductByAdmin =  asyncErrorhandler( async (req, res) => {
     numReviews:0,
     price: 500,
     status: false,
-    poster:"/images/newproductPoster.jpg",
-    heroPhrase:'A NEW KIND OF VOCAL TRANSFORMING PROCESSOR',
-    interfaceImage:"/images/newproductInterface.jpg",
-    compatibility: "/images/newproductComp.jpg",
+    poster:"/images/newproductPoster.png",
+    heroPhrase:'YOU BETTER HAVE SOMTHING IMPORTANT TO SAY HERE!',
+    interfaceImage:"/images/newproductInterface.png",
+    compatibility: "/images/newProductCompatibility.png",
     longDescription:'long string',
     video1:
     "https://www.youtube.com/embed/Fwfl3bRmv8Y",
@@ -123,6 +138,7 @@ const updateProductById =  asyncErrorhandler( async (req, res) => {
         */
         const updateProduct = await product.save()
         res.status(201).json(updateProduct)
+        console.log(updateProduct)
 
     }else{
         res.status(404)
@@ -175,4 +191,14 @@ const addProductReview =  asyncErrorhandler( async (req, res) => {
   
   })
 
-export {getProductById, getProducts, deleteProductById, createProductByAdmin, updateProductById, addProductReview}
+
+// GET top rated products.
+//GET /api/products/top-products
+const getTopReviewedProducts =  asyncErrorhandler( async (req, res) => {
+   
+    const products = await Product.find({}).sort({rating: -1}).limit(4)
+    res.json(products)
+   
+  })
+
+export {getTopReviewedProducts, getProductById, getProducts, deleteProductById, createProductByAdmin, updateProductById, addProductReview}

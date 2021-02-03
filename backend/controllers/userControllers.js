@@ -1,7 +1,7 @@
 import User from '../models/userModel.js'
 import generateToken from '../utills/generateToken.js'
 import asyncErrorhandler from 'express-async-handler' //an npm pack for handling errors instead of using try catch
-
+import {onRegisterEmail} from '../emails/account.js' 
 //this is a post request to route: api/users/login
 const authUser = asyncErrorhandler(async (req,res)=>{
    const {email,password} = req.body //extract the email & password from the body!
@@ -111,6 +111,7 @@ const registerUser = asyncErrorhandler(async (req,res)=>{
             token: generateToken(user._id) 
 
          })
+         onRegisterEmail(user.email, user.name)
      }else{
          res.status(400)
          throw new Error('User could not be created- invalid data')

@@ -59,6 +59,14 @@ else if (!product._id || product._id !== productId) {
    
   }
 
+  const minimizeReview = ()=>{
+    console.log("delete or minimize")
+  }
+  
+  const deleteReview = ()=>{
+    console.log("delete or minimize")
+  }
+
   return (
     <>
         <Link className='btn btn-light my-5 ' to='/'>
@@ -202,21 +210,50 @@ else if (!product._id || product._id !== productId) {
                   {product.reviews.length === 0 &&  <Message> Be the firts to review this product.</Message>}
                     {/* <h1>{product.reviews[0]._id}</h1> */}
                     <div>
-                         { reviews.length > 0 && reviews.map((review) => (
-                              <Card md={6} key={review._id} >
+                         { reviews.length > 0 && reviews.map((review) => ( /*users reviwes on product */
+                              <Card md={6} key={review._id} className='p-2 mb-2' >
                                 <ListGroup>
-                                  <h5>Created at: {review.createdAt.substring(0,10)} </h5>
-                                  <ListGroup.Item>
-                                  <h4><i style={{color:'#9406ed'}} className="fas fa-pencil-alt"></i> {review.name}</h4>
-                                  </ListGroup.Item>
-                                  <div className='review'>
-                                   <h4><Ratings value={Number(review.rating)}/></h4> 
-                                   <h4 style={{paddingLeft:'1%', fontWeight:'bold'}}>{review.title}</h4>
-                                  </div>
-                                  <p>{review.comment}</p>
+                                  <Row className='reviewBar' >
+                                    <Col  className='flex-grow-0 m-0 p-0'>
+                                      <Button type='button' onClick ={()=> deleteReview()} variant="blank" >
+                                       <i style={{color:'#9406ed',fontSize:'1rem'}} className="fas fa-times"></i>
+                                      </Button>
+                                    </Col>
+                                    <Col className='flex-grow-0 m-0 p-0'>
+                                      <Button  type='button' onClick ={()=> minimizeReview()} variant="blank" >
+                                       <i style={{color:'#9406ed',fontSize:'1rem'}} className="fas fa-minus"></i>
+                                      </Button>
+                                    </Col>
+                                  </Row>
+                                  
+                                  <Row md={12} className='reviewTop' >
+                                    <Col xs md={1}>
+                                      <i style={{color:'#9406ed',fontSize:'1.5rem',textAlign:'right'}} className="fas fa-user-astronaut"></i>
+                                    </Col>
+                                    <Col xs md={11} className='p-0 m-0'>
+                                      <Link className='userReviewProfile' to={`/users/${review.name}`}>
+                                      {review.name}
+                                      </Link>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col md={12}>
+                                      <h4 style={{fontWeight:'bold',}}>{review.title}</h4>
+                                      <h4><Ratings value={Number(review.rating)}/></h4>
+                                    </Col>
+                                  </Row>
+                                  <Row className='m-0 pb-1 h6' >
+                                    Created at: {review.createdAt.substring(0,10)} 
+                                  </Row>
+                                  <Row md xs={12} >
+                                    <Col>
+                                       <p>{review.comment}</p>
+                                    </Col>
+                                  </Row>
+                                  <Row style={{paddingLeft:'0.8rem'}}>
+                                     <Button variant="secondary">Comment</Button>
+                                  </Row>
                                 </ListGroup>
-                          
-                                
                               </Card>
                         ))} 
                     </div>

@@ -4,16 +4,18 @@ import {useDispatch, useSelector} from 'react-redux' //so we can access the redu
 import { Table, Button, Row, Col} from 'react-bootstrap'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
+import Paginate from '../components/Paginate'
 import {listProducts,deleteProductById, createProductByAdmin} from '../actions/productsActions'
 import {PRODUCT_CREATE_RESET} from '../constants/productsConstants'
 
 
-const AdminsProductListScreen = ({ history}) => { //destructure match & history out of props
-    
+const AdminsProductListScreen = ({history, match}) => { //destructure match & history out of props
+    const pageNumber=match.params.pageNumber || 1 //for pagination
     const dispatch = useDispatch()
 
     const productsList = useSelector(state=> state.productsList) //from the store's state
-    const {loading, error, products } = productsList //destructre
+    const {loading, error, products, page, pages } = productsList //destructre
+    // page and pages are for pagination
 
     const productDelete = useSelector(state=> state.productDeleteByAdmin) //from the store's state
     const {loading: deleteProductLoading, error:deleteProductError, success:deleteProductSuccess } = productDelete //destructre + rename
@@ -36,10 +38,11 @@ const AdminsProductListScreen = ({ history}) => { //destructure match & history 
         if(createProductSuccess){ //if user created a new product will be re directed to edit the dummy data!
             history.push(`/admin/product/${createdProduct._id}/edit`)
         }else{
-            dispatch(listProducts()) //get all products in the app
+            dispatch(listProducts('', pageNumber)) //get all products in the app
+            //after implementing pagination we must give back the first parameter empty , it's search related. (searchKeyword)
         }
         
-    }, [dispatch, history,userInfo, deleteProductSuccess, createProductSuccess, createdProduct])
+    }, [dispatch, pageNumber,history, userInfo, deleteProductSuccess, createProductSuccess, createdProduct])
     
     const createProductHandler= ()=>{
         dispatch(createProductByAdmin())
@@ -81,44 +84,47 @@ const AdminsProductListScreen = ({ history}) => { //destructure match & history 
                  error ? 
                  <Message variant='danger'>{error}</Message> :
                   (
-                    <Table   hover responsive size='sm' >
-                        <thead>
-                            <tr>
-                                <th>Product ID</th>
-                                <th>Brand</th>
-                                <th>Price</th>
-                                <th>No.Reviews</th>
-                                <th>Name</th>
-                                
-                            </tr>
-                        </thead>
-                        <tbody> 
-                            {products.map(product => (
-                                <tr key={product._id}>
-                                    <td>{product._id}</td>
-                                    <td>{product.brand} </td>
-                                    <td>${product.price}</td>
-                                    <td>{product.numReviews} </td>
-                                    <td>
-                                      <LinkContainer to={`/products/${product._id}`} >
-                                      <Button variant="secondary" block>{product.name}</Button>  
-                                      </LinkContainer>
-                                    </td>
+                    <>
+                        <Table   hover responsive size='sm' >
+                            <thead>
+                                <tr>
+                                    <th>Product ID</th>
+                                    <th>Brand</th>
+                                    <th>Price</th>
+                                    <th>No.Reviews</th>
+                                    <th>Name</th>
                                     
-                                    <td>
-                                        <LinkContainer to={`/admin/product/${product._id}/edit`} >
-                                            <Button variant="light"> <i className="fas fa-edit" style={{color: '#061b73'}}></i></Button>
-                                        </LinkContainer>
-                                       
-                                    </td>
-                                    <td>
-                                    <Button variant="light" onClick={()=>deleteUserHandler(product._id,product.name)}><i className="fas fa-times"  style={{color: '#730624'}}></i></Button>
-                                    </td>
                                 </tr>
-                            ) )}
+                            </thead>
+                            <tbody> 
+                                {products.map(product => (
+                                    <tr key={product._id}>
+                                        <td>{product._id}</td>
+                                        <td>{product.brand} </td>
+                                        <td>${product.price}</td>
+                                        <td>{product.numReviews} </td>
+                                        <td>
+                                        <LinkContainer to={`/products/${product._id}`} >
+                                        <Button variant="secondary" block>{product.name}</Button>  
+                                        </LinkContainer>
+                                        </td>
+                                        
+                                        <td>
+                                            <LinkContainer to={`/admin/product/${product._id}/edit`} >
+                                                <Button variant="light"> <i className="fas fa-edit" style={{color: '#061b73'}}></i></Button>
+                                            </LinkContainer>
+                                        
+                                        </td>
+                                        <td>
+                                        <Button variant="light" onClick={()=>deleteUserHandler(product._id,product.name)}><i className="fas fa-times"  style={{color: '#730624'}}></i></Button>
+                                        </td>
+                                    </tr>
+                                ) )}
 
-                        </tbody>
-                    </Table>
+                            </tbody>
+                        </Table>
+                        <Paginate pages={pages} page={page} isAdmin={true} />
+                    </>
                   )
                 }
         </div>

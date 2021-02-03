@@ -3,14 +3,20 @@ import express from 'express'
 const router = express.Router()// api/products/...
 
 import {protect,adminProtect} from '../middleware/authMiddleware.js' //routes protecting middleware
-import {getProductById, getProducts, deleteProductById,  createProductByAdmin, updateProductById, addProductReview} from '../controllers/productControllers.js'
+import {getTopReviewedProducts,getProductById, getProducts, deleteProductById,  createProductByAdmin, updateProductById, addProductReview} from '../controllers/productControllers.js'
 
 //fetch all products from DB
 // syntax B-> router.get('/', getProducts )
 router.route('/')
 .get(getProducts)
 .post(protect,adminProtect,createProductByAdmin)
-  
+
+router.route('/:id/reviews').post(protect, addProductReview)
+
+
+router.get('/top-products', getTopReviewedProducts)
+
+
 //fetch single  product by id from DB
 //syntax B-> router.get('/:id',getProductById )
 //delete- a protected route  + admin only access. for delete product by id.
@@ -19,8 +25,8 @@ router.route('/:id')
 .delete(protect,adminProtect,deleteProductById)
 .put(protect,adminProtect,updateProductById)//admin only
 
-router.route('/:id/reviews').post(protect, addProductReview)
 export default router
+
 
   /*
   //fetch all products from DB

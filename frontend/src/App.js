@@ -18,6 +18,9 @@ import UserEditByAdminScreen from './screens/UserEditByAdminScreen'
 import AdminsProductListScreen from './screens/AdminsProductListScreen'
 import AdminsProductEditScreen from './screens/AdminsProductEditScreen'
 import AdminsAllOrdersScreen from './screens/AdminsAllOrdersScreen'
+import AboutScreen from './screens/AboutScreen'
+
+
 const App = () => {
   return (
     <Router>
@@ -36,10 +39,17 @@ const App = () => {
             <Route path='/cart/:id?' component={CartScreen} />
             <Route path='/admin/users' component={AdminsAllUsersScreen} />
             <Route path='/admin/user/:id/edit' component={UserEditByAdminScreen} /> 
-            <Route path='/admin/products' component={AdminsProductListScreen} />
-            <Route path='/admin/product/:id/edit' component={AdminsProductEditScreen} />
+            <Route path='/admin/products' component={AdminsProductListScreen} exact />
+            <Route path='/admin/products/:pagenumber' component={AdminsProductListScreen} exact/>
+            <Route path='/admin/product/:id/edit' component={AdminsProductEditScreen}  />
             <Route path='/admin/orders' component={AdminsAllOrdersScreen} />
+            <Route path='/search/:searchKeyword' component={HomeScreen} exact /> {/*home screen with search results*/}
+            <Route path='/page/:pageNumber' component={HomeScreen} exact /> {/*home screen with search results*/}
+            <Route path='/search/:searchKeyword/page/:pagenumber' component={HomeScreen} /> {/*home screen with search results*/}
+            <Route path='/about' component={AboutScreen} />
+
             <Route path='/' component={HomeScreen} exact />
+
 
           </Container>
         </main>

@@ -28,6 +28,34 @@ const products = [
     ],
   },
   {
+   
+    name: 'COMET',
+    image: '/images/Comet.jpg',
+    brand: 'Polyverse',
+    category: 'plugin',
+    description: 'Extreme vocal transformer',
+    rating: 4.5,
+    numReviews: 12,
+    price: 149,
+    status: true,
+    poster: '/images/manipulatorPoster.jpg',
+    interfaceImage: '/images/manipulatorImage.png',
+    compatibility: '/images/COMPATIBILITY-300x60.png',
+    longDescription:
+      'Through unique granular algorithms, Manipulator can dramatically alter the timbre and pitch of monophonic audio in new and unexplored ways. From subtly imposing pitch and harmonization, to a full-on sonic mangle that will leave you with a totally new sound, Manipulator is as    versatile as it is creativity-inducing.',
+    video1: 'https://www.youtube.com/embed/Fwfl3bRmv8Y',
+    features: [
+      'Bend and sculpt your sounds into new ones',
+      'Alter timbre and pitch of vocals and instruments',
+      '10 Different effects with endless combinations',
+      'Change melodies of existing performances',
+      'Create harmonies with up to 4 polyphonic voices',
+      'Extensive modulation capabilities',
+      'Real-time processing for live performance',
+      `Supports VST / AU / AAX plug-in formats`,
+    ],
+  },
+  {
     
     name: 'COMET',
     image: '/images/comet.jpg',

@@ -19,19 +19,23 @@ import {
     PRODUCT_ADD_REVIEW_REQUEST,
     PRODUCT_ADD_REVIEW_SUCCESS,
     PRODUCT_ADD_REVIEW_FAIL,
+    PRODUCT_TOP_REVIEWS_REQUEST,
+    PRODUCT_TOP_REVIEWS_SUCCESS,
+    PRODUCT_TOP_REVIEWS_FAIL,
     
 
  } from '../constants/productsConstants'
 
-export const listProducts =  ()=>//this is an action creator function
+export const listProducts =  (searchKeyword='', pageNumber = '')=>//this is an action creator function
      //we will do the fetch here! instead of the HomeScreen component (with axios)
      //because it's asynchronous we need redux thunk middleware:
-      async (dispatch)=>{
+     //pageNumber--> used for pagination! in url's quary string. 
+     async (dispatch)=>{
 
         try{
             dispatch({type: PRODUCTS_LIST_REQUEST}) // only type will be sent to product reducer
-            
-            const { data } = await axios.get('/api/products') //here the actual data of products fron the DB will be.
+            const { data } = await axios.get(`/api/products?searchKeyword=${searchKeyword}&pageNumber=${pageNumber}`) //here the actual data of products fron the DB will be.
+            //`/api/products?searchKeyword=${searchKeyword}` --> passing a query string to the server ? -> means - "does it exists?"
             
             dispatch({type: PRODUCTS_LIST_SUCCESS, payload: data}) //the actual products data will be sent to reducer as payload, and a type will be included!
        
@@ -54,7 +58,7 @@ export const listProducts =  ()=>//this is an action creator function
              dispatch({type: PRODUCT_CARD_REQUEST}) // only type will be sent to product reducer
              
              const { data } = await axios.get(`/api/products/${id}`) //here the actual data of products fron the DB will be.
-             console.log(data.reviews[0]._id)
+             //console.log(data.reviews[0]._id)
              dispatch({type: PRODUCT_CARD_SUCCESS, payload: data}) //the actual products data will be sent to reducer as payload, and a type will be included!
         
          }catch(error){  // if the fetch failed we need to catch  en error that was sent by the server's error handler moddleware we built!!
@@ -215,10 +219,7 @@ export const updateProductByAdmin = (product) => async (dispatch, getState)=>{
            :
            error.message
             })
-   
-   
     }
-   
 }
 
 //add a product review (post)
@@ -260,5 +261,33 @@ export const addProductReview = (productId, review) => async (dispatch, getState
            error.message
             })
     }
+}
+
+//get products sorted by rating from server(get)
+export const getProductsByReviews = () => async (dispatch)=>{
+    //here we also use the redux-thunk to make an asynchronous request.
    
+    try{
+       dispatch({
+           type: PRODUCT_TOP_REVIEWS_REQUEST
+       })
+
+       
+       const {data} = await axios.get(`/api/products/top-products`) 
+    
+       dispatch({
+        type: PRODUCT_TOP_REVIEWS_SUCCESS,
+        payload: data,
+       })
+      
+   }catch (error){
+       dispatch({type: PRODUCT_TOP_REVIEWS_FAIL, 
+           payload: 
+           error.response && error.response.data.message 
+           ?
+            error.response.data.message
+           :
+           error.message
+            })
+    }
 }

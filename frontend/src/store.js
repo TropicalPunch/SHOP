@@ -8,12 +8,13 @@ import {
     productDeleteByAdminReducer,
     productCreateByAdminReducer,
     productUpdateByAdminReducer,
-    productAddReviewReducer
+    productAddReviewReducer,
+    productsTopReviewsReducer  
 } from './reducers/productsReducers'
 import {cartReducer} from './reducers/cartReducers'
 import {userLoginReducer,userRegisterReducer,userProfileReducer,userUpdateProfileReducer, usersCompleteListReducer, userDeleteReducer,userUpdateByAdminReducer } from './reducers/userReducers'
 import {orderCreateReducer,orderDetailsReducer,orderPayReducer,orderUserHistoryReducer,ordersListAllReducer,orderSetAsDeliverdReducer} from './reducers/orderReducers'
-
+import {contactUsTicketReducer} from './reducers/contsctUsReducers'
 
 const reducer  = combineReducers({ //reducer is part of the store's inputs
     productsList: productsListReducer,
@@ -22,6 +23,7 @@ const reducer  = combineReducers({ //reducer is part of the store's inputs
     productCreateByAdmin:productCreateByAdminReducer,
     productUpdateByAdmin:productUpdateByAdminReducer,
     productAddReview:productAddReviewReducer,
+    productsTopReviews: productsTopReviewsReducer,  
     cart: cartReducer,
     userLogin: userLoginReducer,
     userRegister: userRegisterReducer,
@@ -35,7 +37,8 @@ const reducer  = combineReducers({ //reducer is part of the store's inputs
     orderPay: orderPayReducer,
     orderUserHistory: orderUserHistoryReducer,
     ordersListAll: ordersListAllReducer,
-    orderSetAsDeliverd:orderSetAsDeliverdReducer
+    orderSetAsDeliverd:orderSetAsDeliverdReducer,
+    contactUsTicket:contactUsTicketReducer
     
 })
 

@@ -1,9 +1,11 @@
 import React from 'react'
+import {Route} from 'react-router-dom'
 import{useDispatch, useSelector} from 'react-redux'
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import mainLogo from './mainlogo.png'
 import {logout} from '../actions/userActions'
+import SearchField from './Search'
 
 const Header = () => {
 
@@ -15,7 +17,7 @@ const Header = () => {
   return (
     <header>
       <Navbar bg='light' expand='lg' fixed='top' collapseOnSelect>
-        <Container >
+        <Container className='mx-0' >
           <LinkContainer to='/'>
             <Navbar.Brand>
               <img
@@ -27,14 +29,20 @@ const Header = () => {
           </LinkContainer>
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
           <Navbar.Collapse id='basic-navbar-nav'>
-            <Nav className='ml-auto'>
-              <LinkContainer to='/cart'>
-                <Nav.Link varient='dark'>
-                  <h4>
-                    <i className='fas fa-shopping-cart p-3'></i>
-                  </h4>
-                </Nav.Link>
+            {/*rendering the search field in the navBar */}
+           
+            <Nav className='ml-auto justify-content-end'>
+
+              <LinkContainer to='/about' style={{display:'flex', alignItems:'center'}}>
+                
+                  <Nav.Link varient='dark' className='h4' >
+                      About
+                  </Nav.Link>
+                
               </LinkContainer>
+              
+              
+            
               {userInfo ? (
                 <div style={{display:'flex', alignItems:'center'}}>
                   
@@ -71,6 +79,15 @@ const Header = () => {
                  </div>
                
               )}
+              <LinkContainer to='/cart'>
+                <Nav.Link varient='dark'>
+                  <h4>
+                    <i className='fas fa-shopping-cart p-3'></i>
+                  </h4>
+                </Nav.Link>
+              </LinkContainer>    
+
+              <Route render={({history}) =>  <SearchField history={history} /> } />
             </Nav>
           </Navbar.Collapse>
         </Container>

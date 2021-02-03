@@ -1,7 +1,7 @@
 import path from 'path' // this is a node module
 import express from 'express'
 import multer from 'multer' //an npm pack for uploading files
-import asyncErrorhandler from 'express-async-handler' //an npm pack for handling errors instead of using try catch
+//import asyncErrorhandler from 'express-async-handler' //an npm pack for handling errors instead of using try catch
 
 const router = express.Router()  //api/uploads/...
 
@@ -45,7 +45,7 @@ function checkFileType(file,cb){
 //will be used as a middleware in the route.
 const upload = multer({
     storage,
-    limits: {fileSize: 100000},
+    limits: {fileSize: 1000000},
     fileFilter: function(req, file, cb){
         checkFileType(file,cb)
         //console.log('this is the file data :'+JSON.stringify(file))

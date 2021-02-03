@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux' //so we can access the redux app level state
 import {Link} from 'react-router-dom'
-import {Form, Button, Row, Col} from 'react-bootstrap'
+import {Form, Button, Row} from 'react-bootstrap'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import FormContainer from'../components/FormContainer'

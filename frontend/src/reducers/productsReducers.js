@@ -20,6 +20,11 @@ import {
          PRODUCT_ADD_REVIEW_SUCCESS,
          PRODUCT_ADD_REVIEW_FAIL,
          PRODUCT_ADD_REVIEW_RESET,
+         PRODUCT_TOP_REVIEWS_REQUEST,
+         PRODUCT_TOP_REVIEWS_SUCCESS,
+         PRODUCT_TOP_REVIEWS_FAIL,
+        
+
         } from '../constants/productsConstants'
 
 
@@ -30,8 +35,11 @@ export const productsListReducer  = ( state = {products: []}, action ) => { //th
             return {loading: true, products: [] } // fetching data ...
 
         case PRODUCTS_LIST_SUCCESS:
-                return {loading: false, products: action.payload} //if fech success...
-        
+                return {loading: false, 
+                    products: action.payload.products, 
+                    pages: action.payload.pages, 
+                    page: action.payload.page } //if fech success...
+        //due to pagination we now have more data from the request
         case PRODUCTS_LIST_FAIL:
                 return {loading: false, error: action.payload} //if fech failed...
         
@@ -143,6 +151,25 @@ export const productAddReviewReducer  = ( state = { }, action ) => { //this is t
                 return { } 
 
                 default:
+            return state //pass the state as is.
+
+    }
+
+} 
+
+export const productsTopReviewsReducer  = ( state = {products: []}, action ) => { //this is the reducer function we export it!
+
+    switch( action.type ){
+        case PRODUCT_TOP_REVIEWS_REQUEST:
+            return {...state, loading: true, products: [] } // fetching data ...
+
+        case PRODUCT_TOP_REVIEWS_SUCCESS:
+                return {loading: false, products: action.payload} //if fech success...
+        
+        case PRODUCT_TOP_REVIEWS_FAIL:
+                return {loading: false, error: action.payload} //if fech failed...
+        
+        default:
             return state //pass the state as is.
 
     }
