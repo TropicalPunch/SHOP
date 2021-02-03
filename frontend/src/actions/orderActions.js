@@ -234,7 +234,7 @@ export const getAllordersByAdmin = () => async (dispatch, getState)=>{
            }
            
            const {data} = await axios.get(`/api/orders`,config)
-        //we are going to get all the orders in the db 
+           //we are going to get all the orders in the db 
         
         dispatch({
        

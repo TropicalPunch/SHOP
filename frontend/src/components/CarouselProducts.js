@@ -35,7 +35,7 @@ const CarouselProducts = (props) => {
                     <Carousel.Item key={product._id}>
                         <Link to={`/products/${product._id}`} >
                             <Image src={product.poster} alt={product.name} fluid></Image>
-                            <Carousel.Caption className = 'carousel-caption' block>
+                            <Carousel.Caption className = 'carousel-caption'>
                                
                                 <h1> Only ${product.price} </h1>
                             </Carousel.Caption>

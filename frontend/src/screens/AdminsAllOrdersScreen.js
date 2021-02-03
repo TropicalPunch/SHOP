@@ -28,7 +28,7 @@ const AdminsAllOrdersScreen = ({history}) => {
         }
 
          
-     }, [dispatch, history,userInfo]) 
+     }, [dispatch, history,userInfo.isAdmin]) 
 
      
 
@@ -55,11 +55,11 @@ const AdminsAllOrdersScreen = ({history}) => {
                             </tr>
                         </thead>
                         <tbody> 
-                            {orders.map(order => (
+                            {orders.map((order) => (
                                 <tr key={order._id}>
                                     <td>{order._id}</td>
-                                    <td>{order.user.name }</td>
-                                    <td><a href={`mailto:${order.user.email}`}>{order.user.email }</a></td>
+                                    <td>{order.user && order.user.name }</td> {/*if the order.user exists... show name*/}
+                                    <td><a href={`mailto:${order.user && order.user.email}`}>{order.user && order.user.email }</a></td>
                                     <td>{order.createdAt.substring(0,10) /*created automaticallyby mongo */ }</td>
                                     <td>{order.isPaid ? 
                                         order.paidAt.substring(0,10)

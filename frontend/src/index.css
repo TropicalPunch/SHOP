@@ -39,6 +39,31 @@ td {
 .callToAction {
   background-image: url('./components/callToAction.jpg');
 }
+.contact-background {
+  background-image: url('./components/callToAction.jpg');
+}
+.contact-popup {
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 15, 15, 0.8);
+  position: fixed;
+  top: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.popup-wrapper {
+  width: 40vw;
+  height: 75vh;
+  box-shadow: 0 5px 16px rgba(0, 0, 0, 0.2);
+  background: #fff;
+  color: #000;
+
+  position: relative;
+  left: 40%;
+  z-index: 10;
+  border-radius: 10px;
+}
 
 .videoColumn {
   overflow: scroll;
@@ -75,7 +100,7 @@ td {
 
 /*see ProductScreen.js*/
 .priceCard {
-  opacity: 0.6;
+  opacity: 0.7;
   margin-top: 3rem;
 
   position: fixed;

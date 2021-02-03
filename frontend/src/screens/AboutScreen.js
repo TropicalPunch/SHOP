@@ -50,10 +50,10 @@ const AboutScreen = () => { //destructure location & history out of props
                 CONTACT US
                 </Accordion.Toggle>
                 <Accordion.Collapse eventKey="1">
-                <Card.Body>
+                <Card.Body className='contact-background'>
                     <FormContainer>
                         
-                    <Row className='py-3 d-flex justify-content-center text-center h4 '>
+                    <Row className='py-3 d-flex justify-content-center text-center h3 ' style={{color:'white'}}>
                     If you have any questions or comments, please feel free to drop us a message!
                         </Row>
                         {loading &&

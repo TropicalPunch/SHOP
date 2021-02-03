@@ -102,9 +102,9 @@ else if (!product._id || product._id !== productId) {
 
               <Row>
                   {/*this is the price & buy card */}
-                  <Card className='priceCard'> 
+                  <Card border="info"  className='priceCard'> 
                         <Button variant='light' type='button' onClick ={()=> setMinimPrice(!minimPrice)} aria-controls="example-collapse-text" aria-expanded={minimPrice}>
-                                <i className='fas fa-minus'></i>
+                              {minimPrice ? <i className="fas fa-angle-double-up"></i> : <i className='fas fa-plus'> Order {product.name}</i>}
                         </Button>
                         <Collapse in={minimPrice}>
                             <div id="example-collapse-text">

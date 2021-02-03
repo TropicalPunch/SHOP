@@ -7,6 +7,7 @@ import Loader from '../components/Loader'
 import {listAllUsers,deleteUserById } from '../actions/userActions'
 
 
+
 const AdminsAllUsersScreen = ({history}) => {
      const dispatch = useDispatch()
      const usersList = useSelector(state=> state.usersCompleteList)//from the store's state

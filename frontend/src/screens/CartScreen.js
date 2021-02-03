@@ -66,7 +66,7 @@ const CartScreen = (props) => {
                             <ListGroup.Item key={productProp.productId} >
                                  <Row className="float-left">
                                     <Button  type='button' variant='light' onClick={()=> removeItemFromCart(productProp.productId)}>
-                                        <i className='fas fa-times'></i>
+                                        <i style={{color:'red'}} className='fas fa-times'></i>
                                     </Button>
                                  </Row>
                                 <Row>
@@ -85,7 +85,7 @@ const CartScreen = (props) => {
                                         <Row className="d-flex flex-nowrap justify-content-start ">
                                             <p className='text-dark h4 font-weight-bold p-2 '>Quantity:</p>
                                          
-                                            <Button variant="outline-light" type='button'  disabled={productProp.quantity <= 1} onClick ={()=> dispatch(addToCartAction(productProp.productId, productProp.quantity - 1))} >
+                                            <Button style={{height:'2.5rem'}} variant="outline-warning" type='button'  disabled={productProp.quantity <= 1} onClick ={()=> dispatch(addToCartAction(productProp.productId, productProp.quantity - 1))} >
                                                     <i className='fas fa-minus'></i>
                                             </Button>
                                             
@@ -93,7 +93,7 @@ const CartScreen = (props) => {
                                                     <strong>{productProp.quantity}</strong>
                                             </div>
                                            
-                                            <Button   variant="outline-light" type='button' disabled={productProp.quantity > 4} onClick ={()=> dispatch(addToCartAction(productProp.productId, productProp.quantity +1))} >
+                                            <Button style={{height:'2.5rem'}}  variant="outline-warning" type='button' disabled={productProp.quantity > 4} onClick ={()=> dispatch(addToCartAction(productProp.productId, productProp.quantity +1))} >
                                                     <i className='fas fa-plus'></i>
                                             </Button>
                                         </Row>

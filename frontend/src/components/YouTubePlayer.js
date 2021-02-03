@@ -3,14 +3,14 @@ import Draggable from 'react-draggable'
 import { ResizableBox } from 'react-resizable'
 import 'react-resizable/css/styles.css'
 
-const YouTubePlayer = ({ videoLink, width='300' }) => {
+const YouTubePlayer = ({ videoLink, width = 300 }) => {
   return (
     <Draggable handle='.handle'>
       <div
         className='youtube-player'
         style={{ zIndex: 1, paddingBottom: '5%' }}
       >
-        <ResizableBox width={width} height={200}>
+        <ResizableBox width={300} height={200}>
         
           {/*snippit from youtube api*/}
           <iframe
@@ -22,7 +22,7 @@ const YouTubePlayer = ({ videoLink, width='300' }) => {
               height: '100%',
             }}
             src={videoLink}
-            frameborder='0'
+            frameBorder='0'
           > 
           </iframe>
           {/* <div className='expand'>  

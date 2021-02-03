@@ -36,7 +36,7 @@ const reducer  = combineReducers({ //reducer is part of the store's inputs
     orderDetails: orderDetailsReducer,
     orderPay: orderPayReducer,
     orderUserHistory: orderUserHistoryReducer,
-    ordersListAll: ordersListAllReducer,
+    ordersListAll: ordersListAllReducer, 
     orderSetAsDeliverd:orderSetAsDeliverdReducer,
     contactUsTicket:contactUsTicketReducer
     

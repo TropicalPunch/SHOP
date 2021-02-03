@@ -10,6 +10,8 @@ import SearchField from './Search'
 const Header = () => {
 
   const dispatch = useDispatch()
+  const cart = useSelector(state=> state.cart) //gain access to the cartItems from the state.
+  const {cartItems} = cart
   const userLogin =  useSelector(state => state.userLogin)
   const {userInfo} = userLogin
   const logoutHandler = ()=>{dispatch(logout())} //the log out action fired off and the user is logged out by removing the userinfo fron the local storage
@@ -82,7 +84,7 @@ const Header = () => {
               <LinkContainer to='/cart'>
                 <Nav.Link varient='dark'>
                   <h4>
-                    <i className='fas fa-shopping-cart p-3'></i>
+                    { cartItems.length >= 1 ? <i className='fas fa-shopping-cart p-3' style={{ color: 'green'}}></i> : <i className='fas fa-shopping-cart p-3'></i> }
                   </h4>
                 </Nav.Link>
               </LinkContainer>    
